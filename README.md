@@ -14,7 +14,7 @@ flight logging and pulse/SpO₂ monitoring.
 | Phase | Scope | State |
 |------|-------|-------|
 | 1 | Project setup, CI, Zulu clock, baro altimeter | ✅ in place |
-| 2 | GPS, Nearest airports, Direct-To / CDI | planned |
+| 2 | GPS, Nearest airports, Direct-To / CDI, Material 3 UI | ✅ in place (airport search & runway info next) |
 | 3 | METAR / TAF weather | planned |
 | 4 | Timers, auto flight log, GPX export | planned |
 | 5 | Heart rate / SpO₂, hypoxia alerts | planned |
@@ -32,8 +32,8 @@ ADB instead of a paid store account. Details in [docs/SETUP.md](docs/SETUP.md#co
 
 ```
 aviation-watch/
-├── core/aviation/        Pure Kotlin: navigation, atmosphere, units, flight category (JVM unit tests)
-├── wear/                 Wear OS app (Jetpack Compose for Wear OS)
+├── core/aviation/        Pure Kotlin: navigation, Direct-To/CDI, atmosphere, airport CSV, units (JVM unit tests)
+├── wear/                 Wear OS app (Compose for Wear OS, Material 3)
 ├── tools/                Data scripts (airport database builder)
 ├── docs/                 Features, architecture, setup, data sources
 └── .github/              CI workflow, Dependabot, issue templates

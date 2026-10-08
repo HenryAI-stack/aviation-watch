@@ -12,16 +12,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.wear.compose.material.Button
-import androidx.wear.compose.material.ButtonDefaults
-import androidx.wear.compose.material.ListHeader
-import androidx.wear.compose.material.MaterialTheme
-import androidx.wear.compose.material.Text
+import androidx.wear.compose.material3.ListHeader
+import androidx.wear.compose.material3.MaterialTheme
+import androidx.wear.compose.material3.Text
+import androidx.wear.compose.material3.TextButton
+import androidx.wear.compose.material3.TextButtonDefaults
 import com.henryai.aviationwatch.core.Atmosphere
 import com.henryai.aviationwatch.core.Units
 import com.henryai.aviationwatch.sensors.PressureSensor
@@ -52,9 +50,8 @@ fun AltimeterScreen() {
                     p == null -> "---- ft"
                     else -> "${Atmosphere.altitudeFeet(p.toDouble(), qnh).roundToInt()} ft"
                 },
-                fontSize = 30.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colors.primary,
+                style = MaterialTheme.typography.numeralSmall,
+                color = MaterialTheme.colorScheme.primary,
                 textAlign = TextAlign.Center,
             )
         }
@@ -64,18 +61,18 @@ fun AltimeterScreen() {
                 horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Button(
+                TextButton(
                     onClick = { qnh -= 1.0 },
-                    colors = ButtonDefaults.secondaryButtonColors(),
+                    colors = TextButtonDefaults.filledTonalTextButtonColors(),
                 ) { Text("−") }
                 Text(
-                    text = String.format(Locale.US, "QNH\n%.0f\n%.2f\"", qnh, Units.hpaToInHg(qnh)),
+                    text = String.format(Locale.ROOT, "QNH\n%.0f\n%.2f\"", qnh, Units.hpaToInHg(qnh)),
                     textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.caption1,
+                    style = MaterialTheme.typography.labelSmall,
                 )
-                Button(
+                TextButton(
                     onClick = { qnh += 1.0 },
-                    colors = ButtonDefaults.secondaryButtonColors(),
+                    colors = TextButtonDefaults.filledTonalTextButtonColors(),
                 ) { Text("+") }
             }
         }
@@ -86,14 +83,14 @@ fun AltimeterScreen() {
                     "PA ---- ft"
                 } else {
                     String.format(
-                        Locale.US,
+                        Locale.ROOT,
                         "PA %d ft\n%.1f hPa",
                         Atmosphere.altitudeFeet(p.toDouble()).roundToInt(),
                         p,
                     )
                 },
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.caption2,
+                style = MaterialTheme.typography.bodySmall,
             )
         }
     }

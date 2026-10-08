@@ -27,6 +27,10 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v6
 
+      # Bundles the worldwide OurAirports database (public domain) into the APK.
+      - name: Build airport database
+        run: python3 tools/build_airports.py
+
       # Unit tests (core + wear), Android lint and debug/release assembly.
       - name: Build, test and lint
         run: ./gradlew build --stacktrace

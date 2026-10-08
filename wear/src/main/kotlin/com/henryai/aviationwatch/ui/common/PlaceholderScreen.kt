@@ -2,9 +2,9 @@ package com.henryai.aviationwatch.ui.common
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.style.TextAlign
-import androidx.wear.compose.material.ListHeader
-import androidx.wear.compose.material.MaterialTheme
-import androidx.wear.compose.material.Text
+import androidx.wear.compose.material3.ListHeader
+import androidx.wear.compose.material3.MaterialTheme
+import androidx.wear.compose.material3.Text
 import com.henryai.aviationwatch.ui.Destination
 
 /** Stand-in for features that are on the roadmap but not built yet. */
@@ -16,7 +16,7 @@ fun PlaceholderScreen(destination: Destination) {
             Text(
                 text = "${destination.subtitle}\n\nPlanned for phase ${destination.phase}.\nSee docs/FEATURES.md",
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.body2,
+                style = MaterialTheme.typography.bodyMedium,
             )
         }
     }

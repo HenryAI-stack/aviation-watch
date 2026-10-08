@@ -59,11 +59,15 @@ Create your own keystore locally and **never commit it**. `*.jks` and
 `keystore.properties` are git-ignored. Signing config will be added when there is
 something worth releasing.
 
-## Refresh the airport database (phase 2)
+## Airport database
 
-```bash
-python3 tools/build_airports.py --countries AT,DE,CH,IT,HU,CZ,SK,SI
-```
+The app reads `wear/src/main/assets/airports.csv`. It is **generated, not committed**:
 
-This writes `wear/src/main/assets/airports.csv`. A regional subset keeps the APK
-small. Worldwide is ~40k airports, roughly 3 MB.
+- **CI** runs `python3 tools/build_airports.py` before every build, so APKs from
+  GitHub Actions always contain the current worldwide database.
+- **Local builds** (Android Studio): run the script once before building,
+  otherwise Nearest shows "No airport database":
+  ```bash
+  python3 tools/build_airports.py                       # worldwide, ~40k airports
+  python3 tools/build_airports.py --countries AT,DE,CH  # smaller regional subset
+  ```

@@ -62,6 +62,15 @@ object Navigation {
     fun eteSeconds(distanceNm: Double, groundSpeedKt: Double): Long? =
         if (groundSpeedKt < 1.0) null else (distanceNm / groundSpeedKt * 3600.0).toLong()
 
+    /**
+     * Signed difference [to] - [from] in degrees, in (-180, 180].
+     * Positive means [to] is clockwise (to the right) of [from].
+     */
+    fun signedAngleDifference(from: Double, to: Double): Double {
+        val d = normalizeDegrees(to - from)
+        return if (d > 180.0) d - 360.0 else d
+    }
+
     /** Normalizes an angle to [0, 360). */
     fun normalizeDegrees(deg: Double): Double = ((deg % 360.0) + 360.0) % 360.0
 }

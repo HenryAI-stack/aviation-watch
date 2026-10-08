@@ -13,10 +13,10 @@ Legend: ✅ done · 🔜 planned (phase) · 📱 already provided by Wear OS / S
 | Zulu / UTC time, multiple time zones | Zulu clock screen + local time; UTC complication | ✅ 1 / 🔜 6 | `ui/clock` |
 | Barometric altimeter, baro setting | Altimeter with adjustable QNH (hPa / inHg), pressure altitude | ✅ 1 | Cabin altitude in pressurised aircraft |
 | Altitude alerts | Vibration when crossing a set altitude | 🔜 4 | |
-| Nearest airports ("NRST") | GPS position + bundled OurAirports DB, bearing/distance list | 🔜 2 | Logic ready in `core` (`NearestAirports`) |
-| Direct-To navigation | Bearing, distance, ETE, ground speed, track | 🔜 2 | Logic ready in `core` (`Navigation`) |
-| HSI / CDI | Course deviation needle from cross-track error | 🔜 2 | `Navigation.crossTrackMeters` |
-| Airport info (elevation, runways, frequencies) | From OurAirports runways/frequencies CSV | 🔜 2 | |
+| Nearest airports ("NRST") | GPS position + bundled OurAirports DB, magnetic bearing/distance list | ✅ 2 | `ui/nearest`; tap an airport to go Direct-To |
+| Direct-To navigation | BRG, DIS, DTK, XTK, ETE, GS, TRK (magnetic), screen kept on | ✅ 2 | `ui/directto`; airport search by ident is next |
+| HSI / CDI | CDI needle (1 NM terminal / 2 NM enroute full scale) + bearing pointer relative to track | ✅ 2 | Full rotating HSI rose later |
+| Airport info (elevation, runways, frequencies) | Name + elevation now; runways/frequencies from OurAirports CSVs | 🔜 2 | |
 | METAR / TAF | aviationweather.gov Data API, colour-coded flight category | 🔜 3 | `FlightCategory` ready in `core` |
 | Weather at nearest / destination airport | Combined Nearest + Weather | 🔜 3 | |
 | Automatic flight logging | Detect takeoff/landing from GPS speed & baro trend; block/air time | 🔜 4 | Foreground service |

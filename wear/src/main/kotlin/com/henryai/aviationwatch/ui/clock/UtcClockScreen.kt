@@ -8,11 +8,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
-import androidx.wear.compose.material.MaterialTheme
-import androidx.wear.compose.material.Scaffold
-import androidx.wear.compose.material.Text
+import androidx.wear.compose.material3.MaterialTheme
+import androidx.wear.compose.material3.ScreenScaffold
+import androidx.wear.compose.material3.Text
 import kotlinx.coroutines.delay
 import java.time.Instant
 import java.time.ZoneId
@@ -33,23 +31,22 @@ fun UtcClockScreen() {
             value = Instant.now()
         }
     }
-    Scaffold {
+    ScreenScaffold {
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text("UTC", color = MaterialTheme.colors.secondary)
+            Text("UTC", color = MaterialTheme.colorScheme.secondary)
             Text(
                 text = zuluFormat.format(now) + "Z",
-                fontSize = 34.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colors.primary,
+                style = MaterialTheme.typography.numeralMedium,
+                color = MaterialTheme.colorScheme.primary,
             )
-            Text(zuluDateFormat.format(now), style = MaterialTheme.typography.caption1)
+            Text(zuluDateFormat.format(now), style = MaterialTheme.typography.bodySmall)
             Text(
                 text = "LCL " + localFormat.format(now.atZone(ZoneId.systemDefault())),
-                style = MaterialTheme.typography.title3,
+                style = MaterialTheme.typography.titleMedium,
             )
         }
     }

@@ -4,7 +4,7 @@
 
 | Module | Type | Purpose |
 |---|---|---|
-| `:core:aviation` | Kotlin/JVM library | Navigation math, ISA atmosphere, units, flight category, nearest-airport search. No Android deps → fast unit tests. |
+| `:core:aviation` | Kotlin/JVM library | Navigation math, Direct-To solution and CDI scaling, ISA atmosphere, units, flight category, airport CSV parsing, nearest-airport search, display formatting. No Android deps → fast unit tests. |
 | `:wear` | Android application | Wear OS UI (Compose for Wear OS), sensors, location, networking, tiles, complications. |
 
 Planned as the app grows:
@@ -18,9 +18,10 @@ Planned as the app grows:
 
 ```
 ui/<feature>/      Composable screens (+ ViewModel when state gets non-trivial)
+ui/common/         ScrollingScreen (ScreenScaffold + TransformingLazyColumn), MessageScreen
 sensors/           Flows wrapping Android sensors (barometer, later heart rate)
-location/          (phase 2) GPS location → Flow<Fix>
-data/              (phase 2-3) repositories: airports asset, weather API
+location/          LocationManager GPS → Flow<Fix> (kt, magnetic variation), permission gate
+data/              AirportRepository (bundled CSV asset), DirectToStore; weather API in phase 3
 services/          (phase 4) foreground service for flight logging
 tiles/, complications/  (phase 6)
 ```
@@ -30,9 +31,12 @@ combine them using `core` functions, and screens render plain state.
 
 ## Tech choices
 
-- **Kotlin + Jetpack Compose for Wear OS** (`androidx.wear.compose`), Google's
-  recommended stack for Wear OS 3+. Round-screen components (`ScalingLazyColumn`,
-  `TimeText`, swipe-to-dismiss navigation) come out of the box.
+- **Kotlin + Jetpack Compose for Wear OS, Material 3** (`androidx.wear.compose.material3`),
+  Google's recommended stack. `AppScaffold` (one per app, provides `TimeText`) +
+  `ScreenScaffold` per screen, `TransformingLazyColumn` lists, swipe-to-dismiss navigation.
+- **Location from the platform `LocationManager`** (watch GPS), no Google Play services
+  dependency. Directions are shown magnetic using the on-device WMM model
+  (`GeomagneticField`), as on aircraft instruments.
 - **minSdk 30**, the Wear OS 3 level the Galaxy Watch4 launched with. The watch now
   runs newer Wear OS versions. **targetSdk 36** (Wear OS 6), **compileSdk 37** (needed by current AndroidX).
 - **Standalone app** (`com.google.android.wearable.standalone=true`): no phone

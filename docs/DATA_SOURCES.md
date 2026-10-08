@@ -6,7 +6,7 @@ Only free sources that need no API key are used.
 |---|---|---|---|
 | Airports, runways, frequencies | [OurAirports](https://ourairports.com/data/) | Public domain | Nearest, Direct-To, airport info |
 | METAR / TAF | [aviationweather.gov Data API](https://aviationweather.gov/data/api/) (NOAA/NWS) | US government, free. Keep requests low and send a descriptive User-Agent. | Weather pages |
-| Position | Watch GPS (FusedLocationProvider) | — | Navigation |
+| Position | Watch GPS (platform LocationManager) | — | Navigation |
 | Pressure | Watch barometer | — | Altimeter, flight-log detection |
 | Heart rate / SpO₂ | Health Services / Samsung Health Sensor SDK | Free. Samsung SDK needs partner approval only for distribution. | Pulse Ox page |
 

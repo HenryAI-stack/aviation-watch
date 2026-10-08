@@ -1,13 +1,16 @@
 package com.henryai.aviationwatch.ui
 
 import androidx.compose.runtime.Composable
+import androidx.wear.compose.material3.AppScaffold
 import androidx.wear.compose.navigation.SwipeDismissableNavHost
 import androidx.wear.compose.navigation.composable
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
 import com.henryai.aviationwatch.ui.altimeter.AltimeterScreen
 import com.henryai.aviationwatch.ui.clock.UtcClockScreen
 import com.henryai.aviationwatch.ui.common.PlaceholderScreen
+import com.henryai.aviationwatch.ui.directto.DirectToScreen
 import com.henryai.aviationwatch.ui.home.HomeScreen
+import com.henryai.aviationwatch.ui.nearest.NearestScreen
 import com.henryai.aviationwatch.ui.theme.AviationWatchTheme
 
 /** Top-level destinations. Order here is the order on the home menu. */
@@ -27,7 +30,7 @@ enum class Destination(
     PULSE_OX("pulse_ox", "Pulse / SpO₂", "Heart rate, oxygen", 5),
     ;
 
-    val implemented: Boolean get() = phase <= 1
+    val implemented: Boolean get() = phase <= 2
 }
 
 private const val HOME_ROUTE = "home"
@@ -35,15 +38,32 @@ private const val HOME_ROUTE = "home"
 @Composable
 fun AviationWatchApp() {
     AviationWatchTheme {
-        val navController = rememberSwipeDismissableNavController()
-        SwipeDismissableNavHost(navController = navController, startDestination = HOME_ROUTE) {
-            composable(HOME_ROUTE) {
-                HomeScreen(onOpen = { navController.navigate(it.route) })
-            }
-            composable(Destination.UTC.route) { UtcClockScreen() }
-            composable(Destination.ALTIMETER.route) { AltimeterScreen() }
-            Destination.entries.filterNot { it.implemented }.forEach { destination ->
-                composable(destination.route) { PlaceholderScreen(destination) }
+        AppScaffold {
+            val navController = rememberSwipeDismissableNavController()
+            SwipeDismissableNavHost(navController = navController, startDestination = HOME_ROUTE) {
+                composable(HOME_ROUTE) {
+                    HomeScreen(onOpen = { navController.navigate(it.route) })
+                }
+                composable(Destination.NEAREST.route) {
+                    NearestScreen(onDirectTo = {
+                        // Swiping back from Direct-To returns to the home menu, not to Nearest.
+                        navController.navigate(Destination.DIRECT_TO.route) {
+                            popUpTo(Destination.NEAREST.route) { inclusive = true }
+                        }
+                    })
+                }
+                composable(Destination.DIRECT_TO.route) {
+                    DirectToScreen(onOpenNearest = {
+                        navController.navigate(Destination.NEAREST.route) {
+                            popUpTo(Destination.DIRECT_TO.route) { inclusive = true }
+                        }
+                    })
+                }
+                composable(Destination.UTC.route) { UtcClockScreen() }
+                composable(Destination.ALTIMETER.route) { AltimeterScreen() }
+                Destination.entries.filterNot { it.implemented }.forEach { destination ->
+                    composable(destination.route) { PlaceholderScreen(destination) }
+                }
             }
         }
     }

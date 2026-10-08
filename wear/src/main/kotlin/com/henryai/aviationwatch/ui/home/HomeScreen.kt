@@ -5,10 +5,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.wear.compose.material.Chip
-import androidx.wear.compose.material.ChipDefaults
-import androidx.wear.compose.material.ListHeader
-import androidx.wear.compose.material.Text
+import androidx.wear.compose.material3.Button
+import androidx.wear.compose.material3.ButtonDefaults
+import androidx.wear.compose.material3.ListHeader
+import androidx.wear.compose.material3.Text
 import com.henryai.aviationwatch.ui.Destination
 import com.henryai.aviationwatch.ui.common.ScrollingScreen
 import com.henryai.aviationwatch.ui.theme.AviationWatchTheme
@@ -19,17 +19,16 @@ fun HomeScreen(onOpen: (Destination) -> Unit) {
         item { ListHeader { Text("Aviation") } }
         Destination.entries.forEach { destination ->
             item {
-                Chip(
-                    modifier = Modifier.fillMaxWidth(),
+                Button(
                     onClick = { onOpen(destination) },
-                    label = { Text(destination.title) },
+                    modifier = Modifier.fillMaxWidth(),
                     secondaryLabel = { Text(destination.subtitle) },
                     colors = if (destination.implemented) {
-                        ChipDefaults.primaryChipColors()
+                        ButtonDefaults.buttonColors()
                     } else {
-                        ChipDefaults.secondaryChipColors()
+                        ButtonDefaults.filledTonalButtonColors()
                     },
-                )
+                ) { Text(destination.title) }
             }
         }
     }
