@@ -2,7 +2,7 @@ package com.henryai.aviationwatch.core
 
 /**
  * Reads the compact airport CSV produced by `tools/build_airports.py`:
- * `ident,name,type,lat,lon,elevation_ft` with a header row. Malformed rows are skipped.
+ * `ident,name,type,lat,lon,elevation_ft[,iata]` with a header row. Malformed rows are skipped.
  */
 object AirportCsv {
     fun parse(lines: Sequence<String>): List<Airport> =
@@ -23,6 +23,7 @@ object AirportCsv {
             type = Airport.Type.entries.firstOrNull { it.name == f[2] } ?: Airport.Type.OTHER,
             position = GeoPoint(lat, lon),
             elevationFt = f[5].toIntOrNull(),
+            iata = f.getOrNull(6)?.takeIf { it.isNotBlank() },
         )
     }
 

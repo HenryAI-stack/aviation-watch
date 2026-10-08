@@ -58,6 +58,7 @@ dependencies {
     implementation(libs.wear.compose.material3)
     implementation(libs.wear.compose.foundation)
     implementation(libs.wear.compose.navigation)
+    implementation(libs.androidx.wear.input)
 
     debugImplementation(libs.androidx.compose.ui.tooling)
 

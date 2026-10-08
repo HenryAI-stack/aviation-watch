@@ -7,6 +7,8 @@ data class Airport(
     val type: Type,
     val position: GeoPoint,
     val elevationFt: Int?,
+    /** IATA code such as "VIE", if the airport has one. */
+    val iata: String? = null,
 ) {
     enum class Type { LARGE, MEDIUM, SMALL, HELIPORT, SEAPLANE_BASE, OTHER }
 }

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -27,6 +28,7 @@ import com.henryai.aviationwatch.core.Cdi
 import com.henryai.aviationwatch.core.DirectTo
 import com.henryai.aviationwatch.core.NavSolution
 import com.henryai.aviationwatch.data.DirectToStore
+import com.henryai.aviationwatch.data.DirectToTarget
 import com.henryai.aviationwatch.location.Fix
 import com.henryai.aviationwatch.location.LocationPermissionGate
 import com.henryai.aviationwatch.location.LocationSource
@@ -38,13 +40,13 @@ import kotlin.math.roundToInt
 
 /** Direct-To page: bearing pointer, CDI, and BRG/DIS/DTK/XTK/GS/TRK/ETE. Directions are magnetic. */
 @Composable
-fun DirectToScreen(onOpenNearest: () -> Unit) {
+fun DirectToScreen(onOpenNearest: () -> Unit, onOpenAirport: (String) -> Unit) {
     val active by DirectToStore.active.collectAsStateWithLifecycle()
-    val directTo = active
-    if (directTo == null) {
+    val target = active
+    if (target == null) {
         MessageScreen(
             title = "Direct-To",
-            message = "No active Direct-To. Pick an airport from Nearest.",
+            message = "No active Direct-To. Pick an airport from Nearest or Airports.",
             actionLabel = "Nearest",
             onAction = onOpenNearest,
         )
@@ -57,15 +59,21 @@ fun DirectToScreen(onOpenNearest: () -> Unit) {
         KeepScreenOn()
         val currentFix = fix
         if (currentFix == null) {
-            MessageScreen("→ ${directTo.target.ident}", "Waiting for GPS…")
+            MessageScreen("→ ${target.airport.ident}", "Waiting for GPS…")
         } else {
-            DirectToContent(directTo, currentFix)
+            // Direct-To started without a fix (e.g. from search): the course starts here.
+            LaunchedEffect(target) {
+                if (target.origin == null) DirectToStore.anchor(currentFix.position)
+            }
+            DirectToContent(target.toDirectTo(currentFix), currentFix) {
+                onOpenAirport(target.airport.ident)
+            }
         }
     }
 }
 
 @Composable
-private fun DirectToContent(directTo: DirectTo, fix: Fix) {
+private fun DirectToContent(directTo: DirectTo, fix: Fix, onAirportInfo: () -> Unit) {
     val nav = directTo.solve(fix.position, fix.groundSpeedKt, fix.trackTrue)
     val fullScale = Cdi.fullScaleFor(nav.distanceNm)
     ScrollingScreen {
@@ -122,6 +130,13 @@ private fun DirectToContent(directTo: DirectTo, fix: Fix) {
         }
         item {
             Button(
+                onClick = onAirportInfo,
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.filledTonalButtonColors(),
+            ) { Text("Airport info") }
+        }
+        item {
+            Button(
                 onClick = DirectToStore::cancel,
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.filledTonalButtonColors(),
@@ -145,6 +160,8 @@ private fun DataCell(label: String, value: String) {
         Text(value, style = MaterialTheme.typography.titleMedium)
     }
 }
+
+private fun DirectToTarget.toDirectTo(fix: Fix) = DirectTo(origin = origin ?: fix.position, target = airport)
 
 private fun magnetic(fix: Fix, trueDegrees: Double): String = AviationFormat.heading(fix.toMagnetic(trueDegrees))
 

@@ -61,7 +61,8 @@ something worth releasing.
 
 ## Airport database
 
-The app reads `wear/src/main/assets/airports.csv`. It is **generated, not committed**:
+The app reads `airports.csv`, `runways.csv` and `frequencies.csv` from
+`wear/src/main/assets/`. They are **generated, not committed**:
 
 - **CI** runs `python3 tools/build_airports.py` before every build, so APKs from
   GitHub Actions always contain the current worldwide database.

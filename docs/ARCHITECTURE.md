@@ -21,7 +21,7 @@ ui/<feature>/      Composable screens (+ ViewModel when state gets non-trivial)
 ui/common/         ScrollingScreen (ScreenScaffold + TransformingLazyColumn), MessageScreen
 sensors/           Flows wrapping Android sensors (barometer, later heart rate)
 location/          LocationManager GPS → Flow<Fix> (kt, magnetic variation), permission gate
-data/              AirportRepository (bundled CSV asset), DirectToStore; weather API in phase 3
+data/              AirportRepository (bundled CSV assets: airports, runways, frequencies), DirectToStore; weather API in phase 3
 services/          (phase 4) foreground service for flight logging
 tiles/, complications/  (phase 6)
 ```

@@ -14,7 +14,7 @@ flight logging and pulse/SpO₂ monitoring.
 | Phase | Scope | State |
 |------|-------|-------|
 | 1 | Project setup, CI, Zulu clock, baro altimeter | ✅ in place |
-| 2 | GPS, Nearest airports, Direct-To / CDI, Material 3 UI | ✅ in place (airport search & runway info next) |
+| 2 | GPS, Nearest airports, Direct-To / CDI, airport search & info, Material 3 UI | ✅ in place |
 | 3 | METAR / TAF weather | planned |
 | 4 | Timers, auto flight log, GPX export | planned |
 | 5 | Heart rate / SpO₂, hypoxia alerts | planned |

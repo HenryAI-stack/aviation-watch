@@ -54,7 +54,7 @@ fun NearestScreen(onDirectTo: () -> Unit) {
             )
             currentFix == null -> MessageScreen("Nearest", "Waiting for GPS…")
             else -> NearestList(currentFix, nearest) { airport ->
-                DirectToStore.activate(from = currentFix.position, airport = airport)
+                DirectToStore.activate(airport, from = currentFix.position)
                 onDirectTo()
             }
         }

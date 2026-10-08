@@ -14,9 +14,10 @@ Legend: ✅ done · 🔜 planned (phase) · 📱 already provided by Wear OS / S
 | Barometric altimeter, baro setting | Altimeter with adjustable QNH (hPa / inHg), pressure altitude | ✅ 1 | Cabin altitude in pressurised aircraft |
 | Altitude alerts | Vibration when crossing a set altitude | 🔜 4 | |
 | Nearest airports ("NRST") | GPS position + bundled OurAirports DB, magnetic bearing/distance list | ✅ 2 | `ui/nearest`; tap an airport to go Direct-To |
-| Direct-To navigation | BRG, DIS, DTK, XTK, ETE, GS, TRK (magnetic), screen kept on | ✅ 2 | `ui/directto`; airport search by ident is next |
+| Direct-To navigation | BRG, DIS, DTK, XTK, ETE, GS, TRK (magnetic), screen kept on | ✅ 2 | `ui/directto`; start from Nearest, search or airport info |
+| Airport / waypoint search | ICAO ident, IATA code or name via system keyboard or voice | ✅ 2 | `ui/search`; user waypoints later |
 | HSI / CDI | CDI needle (1 NM terminal / 2 NM enroute full scale) + bearing pointer relative to track | ✅ 2 | Full rotating HSI rose later |
-| Airport info (elevation, runways, frequencies) | Name + elevation now; runways/frequencies from OurAirports CSVs | 🔜 2 | |
+| Airport info (elevation, runways, frequencies) | Name, type, elevation, runways (length, width, surface, lighting), frequencies | ✅ 2 | `ui/airport`; OurAirports data |
 | METAR / TAF | aviationweather.gov Data API, colour-coded flight category | 🔜 3 | `FlightCategory` ready in `core` |
 | Weather at nearest / destination airport | Combined Nearest + Weather | 🔜 3 | |
 | Automatic flight logging | Detect takeoff/landing from GPS speed & baro trend; block/air time | 🔜 4 | Foreground service |
