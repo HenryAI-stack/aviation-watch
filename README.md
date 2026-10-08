@@ -15,7 +15,7 @@ flight logging and pulse/SpO₂ monitoring.
 |------|-------|-------|
 | 1 | Project setup, CI, Zulu clock, baro altimeter | ✅ in place |
 | 2 | GPS, Nearest airports, Direct-To / CDI, airport search & info, Material 3 UI | ✅ in place |
-| 3 | METAR / TAF weather | planned |
+| 3 | METAR / TAF, runway wind, density altitude, QNH sync | ✅ in place |
 | 4 | Timers, auto flight log, GPX export | planned |
 | 5 | Heart rate / SpO₂, hypoxia alerts | planned |
 | 6 | Tiles & complications | planned |

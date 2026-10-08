@@ -30,19 +30,21 @@ data class Fix(
     val timeMillis: Long,
 ) {
     /** Magnetic variation (declination) in degrees, east positive, from the WMM model. */
-    val magneticVariation: Double by lazy {
-        GeomagneticField(
-            position.latitude.toFloat(),
-            position.longitude.toFloat(),
-            (altitudeM ?: 0.0).toFloat(),
-            timeMillis,
-        ).declination.toDouble()
-    }
+    val magneticVariation: Double by lazy { magneticVariation(position, altitudeM ?: 0.0, timeMillis) }
 
     /** Converts a true direction to magnetic at this position. */
     fun toMagnetic(trueDegrees: Double): Double =
         Navigation.normalizeDegrees(trueDegrees - magneticVariation)
 }
+
+/** Magnetic variation (declination) at [position] in degrees, east positive (World Magnetic Model). */
+fun magneticVariation(position: GeoPoint, altitudeM: Double = 0.0, timeMillis: Long = System.currentTimeMillis()): Double =
+    GeomagneticField(
+        position.latitude.toFloat(),
+        position.longitude.toFloat(),
+        altitudeM.toFloat(),
+        timeMillis,
+    ).declination.toDouble()
 
 fun hasLocationPermission(context: Context): Boolean =
     ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) ==

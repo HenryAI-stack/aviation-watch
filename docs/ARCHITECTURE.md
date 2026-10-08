@@ -21,7 +21,8 @@ ui/<feature>/      Composable screens (+ ViewModel when state gets non-trivial)
 ui/common/         ScrollingScreen (ScreenScaffold + TransformingLazyColumn), MessageScreen
 sensors/           Flows wrapping Android sensors (barometer, later heart rate)
 location/          LocationManager GPS → Flow<Fix> (kt, magnetic variation), permission gate
-data/              AirportRepository (bundled CSV assets: airports, runways, frequencies), DirectToStore; weather API in phase 3
+data/              AirportRepository (bundled CSV assets), WeatherRepository (aviationweather.gov, 5 min cache),
+                   DirectToStore, AltimeterSettings
 services/          (phase 4) foreground service for flight logging
 tiles/, complications/  (phase 6)
 ```
@@ -51,4 +52,4 @@ combine them using `core` functions, and screens render plain state.
   (`collectAsStateWithLifecycle`).
 - The flight-log service (phase 4) will use a low GPS rate (e.g. 5 s) and batched
   barometer readings.
-- Cache weather and refresh it on demand, not by polling.
+- Weather is fetched when a weather screen opens or on Refresh (5 minute cache), never polled.

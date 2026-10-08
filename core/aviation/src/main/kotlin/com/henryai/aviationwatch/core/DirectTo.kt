@@ -79,6 +79,14 @@ object AviationFormat {
         }
     }
 
+    /** METAR-style wind as "290°12G25kt", "VRB03kt" or "Calm" (direction true, as reported). */
+    fun wind(wind: Wind): String {
+        if (wind.isCalm) return "Calm"
+        val direction = wind.directionTrue?.let { "%03d°".format(Locale.ROOT, it) } ?: "VRB"
+        val gust = wind.gustKt?.let { "G%02d".format(Locale.ROOT, it) } ?: ""
+        return "$direction${"%02d".format(Locale.ROOT, wind.speedKt)}${gust}kt"
+    }
+
     /** Distance with one decimal below 10 NM, whole NM above. */
     fun distanceNm(nm: Double): String =
         if (nm < 10.0) "%.1f".format(Locale.ROOT, nm) else "%.0f".format(Locale.ROOT, nm)

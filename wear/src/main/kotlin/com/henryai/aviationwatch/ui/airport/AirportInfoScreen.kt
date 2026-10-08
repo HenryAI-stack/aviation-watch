@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.wear.compose.material3.Button
+import androidx.wear.compose.material3.ButtonDefaults
 import androidx.wear.compose.material3.ListHeader
 import androidx.wear.compose.material3.MaterialTheme
 import androidx.wear.compose.material3.Text
@@ -19,6 +20,7 @@ import com.henryai.aviationwatch.core.Runway
 import com.henryai.aviationwatch.data.AirportInfo
 import com.henryai.aviationwatch.data.AirportRepository
 import com.henryai.aviationwatch.data.DirectToStore
+import com.henryai.aviationwatch.data.WeatherRepository
 import com.henryai.aviationwatch.ui.common.MessageScreen
 import com.henryai.aviationwatch.ui.common.ScrollingScreen
 
@@ -28,9 +30,9 @@ private sealed interface InfoState {
     data class Loaded(val info: AirportInfo) : InfoState
 }
 
-/** Airport page: name, elevation, runways, frequencies, and Direct-To. */
+/** Airport page: name, elevation, runways, frequencies, Direct-To and weather. */
 @Composable
-fun AirportInfoScreen(ident: String, onDirectTo: () -> Unit) {
+fun AirportInfoScreen(ident: String, onDirectTo: () -> Unit, onWeather: (String) -> Unit) {
     val context = LocalContext.current
     val state by produceState<InfoState>(initialValue = InfoState.Loading, ident) {
         value = AirportRepository.info(context, ident)?.let { InfoState.Loaded(it) } ?: InfoState.NotFound
@@ -38,16 +40,20 @@ fun AirportInfoScreen(ident: String, onDirectTo: () -> Unit) {
     when (val s = state) {
         InfoState.Loading -> MessageScreen(ident, "Loading…")
         InfoState.NotFound -> MessageScreen(ident, "Airport not found in the database.")
-        is InfoState.Loaded -> AirportInfoContent(s.info) {
-            // Course origin is set from the first GPS fix on the Direct-To page.
-            DirectToStore.activate(s.info.airport, from = null)
-            onDirectTo()
-        }
+        is InfoState.Loaded -> AirportInfoContent(
+            info = s.info,
+            onDirectTo = {
+                // Course origin is set from the first GPS fix on the Direct-To page.
+                DirectToStore.activate(s.info.airport, from = null)
+                onDirectTo()
+            },
+            onWeather = { onWeather(s.info.airport.ident) },
+        )
     }
 }
 
 @Composable
-private fun AirportInfoContent(info: AirportInfo, onDirectTo: () -> Unit) {
+private fun AirportInfoContent(info: AirportInfo, onDirectTo: () -> Unit, onWeather: () -> Unit) {
     val airport = info.airport
     ScrollingScreen {
         item {
@@ -66,6 +72,15 @@ private fun AirportInfoContent(info: AirportInfo, onDirectTo: () -> Unit) {
         }
         item {
             Button(onClick = onDirectTo, modifier = Modifier.fillMaxWidth()) { Text("Direct-To") }
+        }
+        if (WeatherRepository.hasReports(airport.ident)) {
+            item {
+                Button(
+                    onClick = onWeather,
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.filledTonalButtonColors(),
+                ) { Text("Weather") }
+            }
         }
         if (info.runways.isNotEmpty()) {
             item { ListHeader { Text("Runways") } }

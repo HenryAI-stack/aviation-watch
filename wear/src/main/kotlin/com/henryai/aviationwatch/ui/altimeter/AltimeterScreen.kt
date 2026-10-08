@@ -5,10 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -22,6 +19,7 @@ import androidx.wear.compose.material3.TextButton
 import androidx.wear.compose.material3.TextButtonDefaults
 import com.henryai.aviationwatch.core.Atmosphere
 import com.henryai.aviationwatch.core.Units
+import com.henryai.aviationwatch.data.AltimeterSettings
 import com.henryai.aviationwatch.sensors.PressureSensor
 import com.henryai.aviationwatch.ui.common.ScrollingScreen
 import java.util.Locale
@@ -30,7 +28,8 @@ import kotlin.math.roundToInt
 /**
  * Barometric altimeter. Indicated altitude uses the pilot-set QNH; pressure
  * altitude always uses 1013.25 hPa. Note: in a pressurised cabin the watch
- * measures cabin altitude, not aircraft altitude.
+ * measures cabin altitude, not aircraft altitude. QNH can also be set from a METAR
+ * on the weather page.
  */
 @Composable
 fun AltimeterScreen() {
@@ -38,7 +37,7 @@ fun AltimeterScreen() {
     val available = remember(context) { PressureSensor.isAvailable(context) }
     val pressure by remember(context) { PressureSensor.readings(context) }
         .collectAsStateWithLifecycle(initialValue = null)
-    var qnh by rememberSaveable { mutableDoubleStateOf(Atmosphere.STANDARD_PRESSURE_HPA) }
+    val qnh by AltimeterSettings.qnhHpa.collectAsStateWithLifecycle()
 
     ScrollingScreen {
         item { ListHeader { Text("Altimeter") } }
@@ -62,7 +61,7 @@ fun AltimeterScreen() {
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 TextButton(
-                    onClick = { qnh -= 1.0 },
+                    onClick = { AltimeterSettings.adjust(-1.0) },
                     colors = TextButtonDefaults.filledTonalTextButtonColors(),
                 ) { Text("−") }
                 Text(
@@ -71,7 +70,7 @@ fun AltimeterScreen() {
                     style = MaterialTheme.typography.labelSmall,
                 )
                 TextButton(
-                    onClick = { qnh += 1.0 },
+                    onClick = { AltimeterSettings.adjust(1.0) },
                     colors = TextButtonDefaults.filledTonalTextButtonColors(),
                 ) { Text("+") }
             }
