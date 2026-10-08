@@ -1,20 +1,17 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 }
 
 android {
     namespace = "com.henryai.aviationwatch"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.henryai.aviationwatch"
         // Wear OS 3 (API 30) is the oldest version the Galaxy Watch4 shipped with.
         minSdk = 30
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "0.1.0"
     }
@@ -28,6 +25,7 @@ android {
         }
     }
 
+    // Kotlin's jvmTarget follows targetCompatibility with AGP built-in Kotlin.
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -40,12 +38,6 @@ android {
     lint {
         abortOnError = true
         checkReleaseBuilds = false
-    }
-}
-
-kotlin {
-    compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_17)
     }
 }
 
@@ -64,8 +56,6 @@ dependencies {
     implementation(libs.wear.compose.material)
     implementation(libs.wear.compose.foundation)
     implementation(libs.wear.compose.navigation)
-
-    implementation(libs.play.services.location)
 
     debugImplementation(libs.androidx.compose.ui.tooling)
 

@@ -19,7 +19,7 @@ Planned as the app grows:
 ```
 ui/<feature>/      Composable screens (+ ViewModel when state gets non-trivial)
 sensors/           Flows wrapping Android sensors (barometer, later heart rate)
-location/          (phase 2) FusedLocationProvider → Flow<Fix>
+location/          (phase 2) GPS location → Flow<Fix>
 data/              (phase 2-3) repositories: airports asset, weather API
 services/          (phase 4) foreground service for flight logging
 tiles/, complications/  (phase 6)
@@ -34,7 +34,7 @@ combine them using `core` functions, and screens render plain state.
   recommended stack for Wear OS 3+. Round-screen components (`ScalingLazyColumn`,
   `TimeText`, swipe-to-dismiss navigation) come out of the box.
 - **minSdk 30**, the Wear OS 3 level the Galaxy Watch4 launched with. The watch now
-  runs newer Wear OS versions. **targetSdk / compileSdk 35**.
+  runs newer Wear OS versions. **targetSdk / compileSdk 36**.
 - **Standalone app** (`com.google.android.wearable.standalone=true`): no phone
   companion app needed. Network goes through the phone's Bluetooth link, Wi-Fi or LTE.
 - **Version catalog** (`gradle/libs.versions.toml`) for all dependencies.
