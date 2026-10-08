@@ -5,7 +5,9 @@ plugins {
 
 android {
     namespace = "com.henryai.aviationwatch"
-    compileSdk = 36
+    // Current AndroidX releases require compiling against API 37. targetSdk
+    // (runtime behaviour) stays at 36, the level of Wear OS 6 on the Watch4.
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.henryai.aviationwatch"

@@ -34,7 +34,7 @@ combine them using `core` functions, and screens render plain state.
   recommended stack for Wear OS 3+. Round-screen components (`ScalingLazyColumn`,
   `TimeText`, swipe-to-dismiss navigation) come out of the box.
 - **minSdk 30**, the Wear OS 3 level the Galaxy Watch4 launched with. The watch now
-  runs newer Wear OS versions. **targetSdk / compileSdk 36**.
+  runs newer Wear OS versions. **targetSdk 36** (Wear OS 6), **compileSdk 37** (needed by current AndroidX).
 - **Standalone app** (`com.google.android.wearable.standalone=true`): no phone
   companion app needed. Network goes through the phone's Bluetooth link, Wi-Fi or LTE.
 - **Version catalog** (`gradle/libs.versions.toml`) for all dependencies.
