@@ -1,0 +1,50 @@
+package com.henryai.aviationwatch.ui
+
+import androidx.compose.runtime.Composable
+import androidx.wear.compose.navigation.SwipeDismissableNavHost
+import androidx.wear.compose.navigation.composable
+import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
+import com.henryai.aviationwatch.ui.altimeter.AltimeterScreen
+import com.henryai.aviationwatch.ui.clock.UtcClockScreen
+import com.henryai.aviationwatch.ui.common.PlaceholderScreen
+import com.henryai.aviationwatch.ui.home.HomeScreen
+import com.henryai.aviationwatch.ui.theme.AviationWatchTheme
+
+/** Top-level destinations. Order here is the order on the home menu. */
+enum class Destination(
+    val route: String,
+    val title: String,
+    val subtitle: String,
+    val phase: Int,
+) {
+    NEAREST("nearest", "Nearest", "Closest airports", 2),
+    DIRECT_TO("direct_to", "Direct-To", "Bearing, distance, ETE, CDI", 2),
+    WEATHER("weather", "Weather", "METAR / TAF", 3),
+    ALTIMETER("altimeter", "Altimeter", "Baro altitude, QNH", 1),
+    UTC("utc", "Zulu Time", "UTC and local", 1),
+    TIMERS("timers", "Timers", "Flight / countdown", 4),
+    FLIGHT_LOG("flight_log", "Flight Log", "Auto block & air time", 4),
+    PULSE_OX("pulse_ox", "Pulse / SpO₂", "Heart rate, oxygen", 5),
+    ;
+
+    val implemented: Boolean get() = phase <= 1
+}
+
+private const val HOME_ROUTE = "home"
+
+@Composable
+fun AviationWatchApp() {
+    AviationWatchTheme {
+        val navController = rememberSwipeDismissableNavController()
+        SwipeDismissableNavHost(navController = navController, startDestination = HOME_ROUTE) {
+            composable(HOME_ROUTE) {
+                HomeScreen(onOpen = { navController.navigate(it.route) })
+            }
+            composable(Destination.UTC.route) { UtcClockScreen() }
+            composable(Destination.ALTIMETER.route) { AltimeterScreen() }
+            Destination.entries.filterNot { it.implemented }.forEach { destination ->
+                composable(destination.route) { PlaceholderScreen(destination) }
+            }
+        }
+    }
+}
