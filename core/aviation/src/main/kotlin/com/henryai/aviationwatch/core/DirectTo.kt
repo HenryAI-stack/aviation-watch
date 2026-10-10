@@ -87,6 +87,12 @@ object AviationFormat {
         return "$direction${"%02d".format(Locale.ROOT, wind.speedKt)}${gust}kt"
     }
 
+    /** Elapsed time as "h:mm:ss" (counters, engine time). */
+    fun elapsed(duration: java.time.Duration): String {
+        val s = duration.seconds.coerceAtLeast(0)
+        return "%d:%02d:%02d".format(Locale.ROOT, s / 3600, (s % 3600) / 60, s % 60)
+    }
+
     /** Distance with one decimal below 10 NM, whole NM above. */
     fun distanceNm(nm: Double): String =
         if (nm < 10.0) "%.1f".format(Locale.ROOT, nm) else "%.0f".format(Locale.ROOT, nm)

@@ -23,6 +23,8 @@ sensors/           Flows wrapping Android sensors (barometer, later heart rate)
 location/          LocationManager GPS → Flow<Fix> (kt, magnetic variation), permission gate
 data/              AirportRepository (bundled CSV assets), WeatherRepository (aviationweather.gov, 5 min cache),
                    DirectToStore, AltimeterSettings
+enginetime/        EngineLogStore (prefs + pending/sent files), EnginetimeAuth (Google device sign-in),
+                   DriveClient (appDataFolder upload), EnginetimeSync (WorkManager, network constraint)
 services/          (phase 4) foreground service for flight logging
 tiles/, complications/  (phase 6)
 ```

@@ -16,7 +16,7 @@ flight logging and pulse/SpO₂ monitoring.
 | 1 | Project setup, CI, Zulu clock, baro altimeter | ✅ in place |
 | 2 | GPS, Nearest airports, Direct-To / CDI, airport search & info, Material 3 UI | ✅ in place |
 | 3 | METAR / TAF, runway wind, density altitude, QNH sync | ✅ in place |
-| 4 | Timers, auto flight log, GPX export | planned |
+| 4 | Engine time log with Enginetime sync (offline-first) | ✅ in place · timers, alerts, GPX next |
 | 5 | Heart rate / SpO₂, hypoxia alerts | planned |
 | 6 | Tiles & complications | planned |
 
@@ -56,3 +56,4 @@ Each push builds a debug APK in GitHub Actions. Download it from the run's
 - [ARCHITECTURE.md](docs/ARCHITECTURE.md): modules, layers, tech choices
 - [SETUP.md](docs/SETUP.md): dev environment, costs, installing on the watch
 - [DATA_SOURCES.md](docs/DATA_SOURCES.md): free aviation data and licensing
+- [ENGINETIME.md](docs/ENGINETIME.md): engine-time sync with the Enginetime web app, one-time setup

@@ -3,6 +3,14 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 
+// Enginetime cloud sync: OAuth client ("TVs and Limited Input devices") in the same
+// Google Cloud project as the Enginetime web app. Never committed: supplied by
+// ~/.gradle/gradle.properties (enginetime.clientId / enginetime.clientSecret) or by the
+// ENGINETIME_CLIENT_ID / ENGINETIME_CLIENT_SECRET environment variables (GitHub secrets in CI).
+// Without them the app still records engine times and keeps them on the watch.
+fun enginetimeSetting(property: String, env: String): String =
+    providers.gradleProperty(property).orElse(providers.environmentVariable(env)).getOrElse("")
+
 android {
     namespace = "com.henryai.aviationwatch"
     // Current AndroidX releases require compiling against API 37. targetSdk
@@ -16,6 +24,17 @@ android {
         targetSdk = 36
         versionCode = 1
         versionName = "0.1.0"
+
+        buildConfigField(
+            "String",
+            "ENGINETIME_CLIENT_ID",
+            "\"${enginetimeSetting("enginetime.clientId", "ENGINETIME_CLIENT_ID")}\"",
+        )
+        buildConfigField(
+            "String",
+            "ENGINETIME_CLIENT_SECRET",
+            "\"${enginetimeSetting("enginetime.clientSecret", "ENGINETIME_CLIENT_SECRET")}\"",
+        )
     }
 
     buildTypes {
@@ -35,6 +54,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     lint {
@@ -59,6 +79,7 @@ dependencies {
     implementation(libs.wear.compose.foundation)
     implementation(libs.wear.compose.navigation)
     implementation(libs.androidx.wear.input)
+    implementation(libs.androidx.work.runtime.ktx)
 
     debugImplementation(libs.androidx.compose.ui.tooling)
 

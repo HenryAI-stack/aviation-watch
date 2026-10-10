@@ -33,6 +33,10 @@ jobs:
 
       # Unit tests (core + wear), Android lint and debug/release assembly.
       - name: Build, test and lint
+        env:
+          # Optional: enables Enginetime Google Drive sync in the APK (see docs/ENGINETIME.md).
+          ENGINETIME_CLIENT_ID: ${{ secrets.ENGINETIME_CLIENT_ID }}
+          ENGINETIME_CLIENT_SECRET: ${{ secrets.ENGINETIME_CLIENT_SECRET }}
         run: ./gradlew build --stacktrace
 
       - name: Upload debug APK

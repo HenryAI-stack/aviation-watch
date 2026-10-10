@@ -23,8 +23,10 @@ Legend: ✅ done · 🔜 planned (phase) · 📱 already provided by Wear OS / S
 | Runway wind | Best runway for the METAR wind with head/tail and crosswind components | ✅ 3 | Uses magnetic variation at the field |
 | Density altitude | From field elevation, METAR temperature and QNH | ✅ 3 | |
 | Baro setting from weather | "Set altimeter QNH" from the METAR | ✅ 3 | Shared with the Altimeter page |
-| Automatic flight logging | Detect takeoff/landing from GPS speed & baro trend; block/air time | 🔜 4 | Foreground service |
-| Flight timer, fuel/tank timer | Count-up and countdown timers with vibration | 🔜 4 | |
+| Flight logging / engine time | MOTOR AN · START · MOTOR AUS with engine & flight time counters, stored on the watch, synced to the Enginetime web app (Google Drive) when online | ✅ 4 | `ui/engine`, `enginetime/`, see ENGINETIME.md |
+| Automatic take-off / landing detection | Suggest START / MOTOR AUS from GPS speed & baro trend | 🔜 4 | |
+| Flight timer | Engine and flight time counters on the Engine Time page | ✅ 4 | |
+| Fuel / tank timer | Countdown timers with vibration | 🔜 4 | |
 | Track log | GPX export to phone / share | 🔜 4 | |
 | Pulse Ox with altitude acclimation | Heart rate (Health Services); SpO₂ via Samsung Health Sensor SDK | 🔜 5 | See note below |
 | Hypoxia alerts | Alert when SpO₂ is low at altitude | 🔜 5 | |

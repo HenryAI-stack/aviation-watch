@@ -14,4 +14,6 @@ features. Roadmap and feature map: `docs/FEATURES.md`.
   Screens use `ScrollingScreen` / `MessageScreen` from `ui/common`; `AppScaffold` lives in `AviationWatchApp`.
 - Dependencies go through `gradle/libs.versions.toml`.
 - Keep it zero-cost: no paid APIs, no API keys committed, no Firebase.
+- Engine-time files must stay byte-compatible with the Enginetime web app (`EnginetimeFormat`, version 2);
+  see docs/ENGINETIME.md. OAuth client ID/secret come from Gradle properties / CI secrets, never the repo.
 - Units: SI internally. Display ft / NM / kt / hPa (+inHg) as pilots expect.

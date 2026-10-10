@@ -1,8 +1,5 @@
 package com.henryai.aviationwatch.ui.search
 
-import android.app.RemoteInput
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,15 +17,13 @@ import androidx.wear.compose.material3.ButtonDefaults
 import androidx.wear.compose.material3.ListHeader
 import androidx.wear.compose.material3.MaterialTheme
 import androidx.wear.compose.material3.Text
-import androidx.wear.input.RemoteInputIntentHelper
 import com.henryai.aviationwatch.core.Airport
 import com.henryai.aviationwatch.core.AirportSearch
 import com.henryai.aviationwatch.data.AirportRepository
 import com.henryai.aviationwatch.ui.common.ScrollingScreen
+import com.henryai.aviationwatch.ui.common.rememberTextInput
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-
-private const val QUERY_KEY = "airport_query"
 
 /** Airport search by ICAO ident, IATA code or name, entered with the system keyboard or voice. */
 @Composable
@@ -37,21 +32,7 @@ fun SearchScreen(onOpenAirport: (String) -> Unit) {
     var query by rememberSaveable { mutableStateOf("") }
     var autoLaunched by rememberSaveable { mutableStateOf(false) }
 
-    val inputLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.StartActivityForResult(),
-    ) { result ->
-        val text = result.data
-            ?.let { RemoteInput.getResultsFromIntent(it) }
-            ?.getCharSequence(QUERY_KEY)
-            ?.toString()
-        if (!text.isNullOrBlank()) query = text.trim()
-    }
-    val launchInput = {
-        val intent = RemoteInputIntentHelper.createActionRemoteInputIntent()
-        val remoteInput = RemoteInput.Builder(QUERY_KEY).setLabel("ICAO, IATA or name").build()
-        RemoteInputIntentHelper.putRemoteInputsExtra(intent, listOf(remoteInput))
-        inputLauncher.launch(intent)
-    }
+    val launchInput = rememberTextInput("ICAO, IATA or name") { query = it }
     // Open the keyboard straight away the first time the screen is shown.
     LaunchedEffect(Unit) {
         if (!autoLaunched && query.isEmpty()) {

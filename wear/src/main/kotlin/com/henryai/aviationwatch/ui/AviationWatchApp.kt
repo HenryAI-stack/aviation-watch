@@ -11,6 +11,10 @@ import com.henryai.aviationwatch.ui.altimeter.AltimeterScreen
 import com.henryai.aviationwatch.ui.clock.UtcClockScreen
 import com.henryai.aviationwatch.ui.common.PlaceholderScreen
 import com.henryai.aviationwatch.ui.directto.DirectToScreen
+import com.henryai.aviationwatch.ui.engine.EngineTimeScreen
+import com.henryai.aviationwatch.ui.engine.FlightLogScreen
+import com.henryai.aviationwatch.ui.engine.SettingsScreen
+import com.henryai.aviationwatch.ui.engine.SignInScreen
 import com.henryai.aviationwatch.ui.home.HomeScreen
 import com.henryai.aviationwatch.ui.nearest.NearestScreen
 import com.henryai.aviationwatch.ui.search.SearchScreen
@@ -26,22 +30,24 @@ enum class Destination(
     val phase: Int,
 ) {
     NEAREST("nearest", "Nearest", "Closest airports", 2),
+    ENGINE_TIME("engine_time", "Engine Time", "Motor an · Start · Motor aus", 4),
     DIRECT_TO("direct_to", "Direct-To", "Bearing, distance, ETE, CDI", 2),
     SEARCH("search", "Airports", "Search ICAO, IATA, name", 2),
     WEATHER("weather", "Weather", "METAR / TAF nearby", 3),
     ALTIMETER("altimeter", "Altimeter", "Baro altitude, QNH", 1),
     UTC("utc", "Zulu Time", "UTC and local", 1),
-    TIMERS("timers", "Timers", "Flight / countdown", 4),
-    FLIGHT_LOG("flight_log", "Flight Log", "Auto block & air time", 4),
+    FLIGHT_LOG("flight_log", "Flight Log", "Engine times · Enginetime sync", 4),
     PULSE_OX("pulse_ox", "Pulse / SpO₂", "Heart rate, oxygen", 5),
+    SETTINGS("settings", "Settings", "Registration, Enginetime account", 4),
     ;
 
-    val implemented: Boolean get() = phase <= 3
+    val implemented: Boolean get() = phase <= 4
 }
 
 private const val HOME_ROUTE = "home"
 private const val AIRPORT_ROUTE = "airport/{ident}"
 private const val WEATHER_ROUTE = "weather/{ident}"
+private const val SIGN_IN_ROUTE = "sign_in"
 
 private fun airportRoute(ident: String) = "airport/" + Uri.encode(ident)
 private fun weatherRoute(ident: String) = "weather/" + Uri.encode(ident)
@@ -94,6 +100,17 @@ fun AviationWatchApp() {
                 composable(WEATHER_ROUTE) { entry ->
                     WeatherDetailScreen(ident = entry.arguments?.getString("ident").orEmpty())
                 }
+                composable(Destination.ENGINE_TIME.route) {
+                    EngineTimeScreen(
+                        onOpenLog = { navController.navigate(Destination.FLIGHT_LOG.route) },
+                        onOpenSettings = { navController.navigate(Destination.SETTINGS.route) },
+                    )
+                }
+                composable(Destination.FLIGHT_LOG.route) { FlightLogScreen() }
+                composable(Destination.SETTINGS.route) {
+                    SettingsScreen(onSignIn = { navController.navigate(SIGN_IN_ROUTE) })
+                }
+                composable(SIGN_IN_ROUTE) { SignInScreen() }
                 composable(Destination.UTC.route) { UtcClockScreen() }
                 composable(Destination.ALTIMETER.route) { AltimeterScreen() }
                 Destination.entries.filterNot { it.implemented }.forEach { destination ->
