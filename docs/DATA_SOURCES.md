@@ -10,10 +10,12 @@ Only free sources that need no API key are used.
 | Pressure | Watch barometer | — | Altimeter, flight-log detection |
 | Heart rate / SpO₂ | Health Services / Samsung Health Sensor SDK | Free. Samsung SDK needs partner approval only for distribution. | Pulse Ox page |
 
-Example METAR request (worldwide ICAO coverage):
+Requests used by the app (worldwide ICAO coverage, plain-text responses decoded on
+the watch, cached for 5 minutes):
 
 ```
-https://aviationweather.gov/api/data/metar?ids=LOWW,LOWG&format=json&taf=true
+https://aviationweather.gov/api/data/metar?ids=LOWW,LOWG&format=raw
+https://aviationweather.gov/api/data/taf?ids=LOWW&format=raw
 ```
 
 ## Possible additions

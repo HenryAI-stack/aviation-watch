@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.wear.compose.material3.ColorScheme
 import androidx.wear.compose.material3.MaterialTheme
+import com.henryai.aviationwatch.core.FlightCategory
 
 /** Avionics-style palette: amber primary on black, with standard flight-category colours. */
 object AviationColors {
@@ -30,4 +31,12 @@ private val colorScheme = ColorScheme(
 @Composable
 fun AviationWatchTheme(content: @Composable () -> Unit) {
     MaterialTheme(colorScheme = colorScheme, content = content)
+}
+
+/** Standard flight-category colours (VFR green, MVFR blue, IFR red, LIFR magenta). */
+fun FlightCategory.color(): Color = when (this) {
+    FlightCategory.VFR -> AviationColors.Vfr
+    FlightCategory.MVFR -> AviationColors.Mvfr
+    FlightCategory.IFR -> AviationColors.Ifr
+    FlightCategory.LIFR -> AviationColors.Lifr
 }

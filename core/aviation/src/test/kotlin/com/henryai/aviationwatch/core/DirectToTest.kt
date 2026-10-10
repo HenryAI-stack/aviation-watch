@@ -60,5 +60,9 @@ class DirectToTest {
         assertEquals("1:05h", AviationFormat.duration(3900))
         assertEquals("4.3", AviationFormat.distanceNm(4.26))
         assertEquals("43", AviationFormat.distanceNm(42.6))
+        assertEquals("290°12G25kt", AviationFormat.wind(Wind(290, 12, 25)))
+        assertEquals("VRB03kt", AviationFormat.wind(Wind(null, 3)))
+        assertEquals("Calm", AviationFormat.wind(Wind(0, 0)))
+        assertEquals("005°08kt", AviationFormat.wind(Wind(5, 8)))
     }
 }

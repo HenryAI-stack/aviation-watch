@@ -15,6 +15,8 @@ import com.henryai.aviationwatch.ui.home.HomeScreen
 import com.henryai.aviationwatch.ui.nearest.NearestScreen
 import com.henryai.aviationwatch.ui.search.SearchScreen
 import com.henryai.aviationwatch.ui.theme.AviationWatchTheme
+import com.henryai.aviationwatch.ui.weather.WeatherDetailScreen
+import com.henryai.aviationwatch.ui.weather.WeatherScreen
 
 /** Top-level destinations. Order here is the order on the home menu. */
 enum class Destination(
@@ -26,7 +28,7 @@ enum class Destination(
     NEAREST("nearest", "Nearest", "Closest airports", 2),
     DIRECT_TO("direct_to", "Direct-To", "Bearing, distance, ETE, CDI", 2),
     SEARCH("search", "Airports", "Search ICAO, IATA, name", 2),
-    WEATHER("weather", "Weather", "METAR / TAF", 3),
+    WEATHER("weather", "Weather", "METAR / TAF nearby", 3),
     ALTIMETER("altimeter", "Altimeter", "Baro altitude, QNH", 1),
     UTC("utc", "Zulu Time", "UTC and local", 1),
     TIMERS("timers", "Timers", "Flight / countdown", 4),
@@ -34,13 +36,15 @@ enum class Destination(
     PULSE_OX("pulse_ox", "Pulse / SpO₂", "Heart rate, oxygen", 5),
     ;
 
-    val implemented: Boolean get() = phase <= 2
+    val implemented: Boolean get() = phase <= 3
 }
 
 private const val HOME_ROUTE = "home"
 private const val AIRPORT_ROUTE = "airport/{ident}"
+private const val WEATHER_ROUTE = "weather/{ident}"
 
 private fun airportRoute(ident: String) = "airport/" + Uri.encode(ident)
+private fun weatherRoute(ident: String) = "weather/" + Uri.encode(ident)
 
 @Composable
 fun AviationWatchApp() {
@@ -81,7 +85,14 @@ fun AviationWatchApp() {
                                 popUpTo(HOME_ROUTE)
                             }
                         },
+                        onWeather = { navController.navigate(weatherRoute(it)) },
                     )
+                }
+                composable(Destination.WEATHER.route) {
+                    WeatherScreen(onOpenStation = { navController.navigate(weatherRoute(it)) })
+                }
+                composable(WEATHER_ROUTE) { entry ->
+                    WeatherDetailScreen(ident = entry.arguments?.getString("ident").orEmpty())
                 }
                 composable(Destination.UTC.route) { UtcClockScreen() }
                 composable(Destination.ALTIMETER.route) { AltimeterScreen() }

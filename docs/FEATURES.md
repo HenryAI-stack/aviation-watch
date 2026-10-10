@@ -18,8 +18,11 @@ Legend: ✅ done · 🔜 planned (phase) · 📱 already provided by Wear OS / S
 | Airport / waypoint search | ICAO ident, IATA code or name via system keyboard or voice | ✅ 2 | `ui/search`; user waypoints later |
 | HSI / CDI | CDI needle (1 NM terminal / 2 NM enroute full scale) + bearing pointer relative to track | ✅ 2 | Full rotating HSI rose later |
 | Airport info (elevation, runways, frequencies) | Name, type, elevation, runways (length, width, surface, lighting), frequencies | ✅ 2 | `ui/airport`; OurAirports data |
-| METAR / TAF | aviationweather.gov Data API, colour-coded flight category | 🔜 3 | `FlightCategory` ready in `core` |
-| Weather at nearest / destination airport | Combined Nearest + Weather | 🔜 3 | |
+| METAR / TAF | aviationweather.gov (raw text, decoded on the watch): wind, vis, wx, clouds, temp/dew, QNH, age, colour-coded flight category; TAF split by change group | ✅ 3 | `ui/weather`, `core/Metar.kt` |
+| Weather at nearest / destination airport | Direct-To target + 10 nearest large/medium airports; Weather button on airport info | ✅ 3 | |
+| Runway wind | Best runway for the METAR wind with head/tail and crosswind components | ✅ 3 | Uses magnetic variation at the field |
+| Density altitude | From field elevation, METAR temperature and QNH | ✅ 3 | |
+| Baro setting from weather | "Set altimeter QNH" from the METAR | ✅ 3 | Shared with the Altimeter page |
 | Automatic flight logging | Detect takeoff/landing from GPS speed & baro trend; block/air time | 🔜 4 | Foreground service |
 | Flight timer, fuel/tank timer | Count-up and countdown timers with vibration | 🔜 4 | |
 | Track log | GPX export to phone / share | 🔜 4 | |

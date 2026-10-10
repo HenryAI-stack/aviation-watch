@@ -30,6 +30,10 @@ object Atmosphere {
     fun pressureAt(altitudeMeters: Double, qnhHpa: Double = STANDARD_PRESSURE_HPA): Double =
         qnhHpa * (1.0 - LAPSE_RATE_K_PER_M * altitudeMeters / STANDARD_TEMP_K).pow(1.0 / EXPONENT)
 
+    /** Pressure altitude in feet of a field at [elevationFt] with the given [qnhHpa]. */
+    fun pressureAltitudeFt(elevationFt: Double, qnhHpa: Double): Double =
+        altitudeFeet(pressureAt(Units.feetToMeters(elevationFt), qnhHpa))
+
     /** ISA temperature in °C at a given pressure altitude in feet. */
     fun isaTemperatureC(pressureAltitudeFt: Double): Double =
         15.0 - 1.98 * pressureAltitudeFt / 1000.0
